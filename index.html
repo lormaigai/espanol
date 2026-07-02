@@ -1,0 +1,277 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="utf-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1">
+    <title>Spanish O Level Revision</title>
+    <link rel="stylesheet" href="styles.css">
+  </head>
+  <body>
+    <div class="app-shell">
+      <aside class="sidebar" aria-label="Revision sections">
+        <div class="brand">
+          <div class="brand-mark">S4</div>
+          <div>
+            <p class="eyebrow">GCE O Level Spanish</p>
+            <h1>Revision Desk</h1>
+          </div>
+        </div>
+
+        <nav class="tab-list" aria-label="Main tabs">
+          <button class="tab-button active" data-tab="overview">Overview</button>
+          <button class="tab-button" data-tab="cloze">Cloze</button>
+          <button class="tab-button" data-tab="tenses">Indefinido vs Imperfecto</button>
+          <button class="tab-button" data-tab="reading">Reading</button>
+          <button class="tab-button" data-tab="writing">Writing</button>
+          <button class="tab-button" data-tab="grammar">Grammar Bank</button>
+          <button class="tab-button" data-tab="listening">Listening</button>
+        </nav>
+
+        <div class="progress-box">
+          <p class="eyebrow">Today</p>
+          <div class="progress-row">
+            <span>Checked</span>
+            <strong id="checked-count">0</strong>
+          </div>
+          <div class="progress-row">
+            <span>Correct</span>
+            <strong id="correct-count">0</strong>
+          </div>
+          <button class="ghost-button" id="reset-progress" type="button">Reset progress</button>
+        </div>
+      </aside>
+
+      <main class="content">
+        <section class="topbar" aria-label="Page summary">
+          <div>
+            <p class="eyebrow">Built from your CA1, CA2 mock, answers, and notes</p>
+            <h2 id="page-title">Overview</h2>
+          </div>
+          <div class="quick-actions">
+            <button class="soft-button" data-jump="cloze" type="button">Start cloze</button>
+            <button class="dark-button" data-jump="tenses" type="button">Drill tenses</button>
+          </div>
+        </section>
+
+        <section class="tab-panel active" id="overview" aria-labelledby="overview-title">
+          <div class="grid two">
+            <article class="panel">
+              <h3 id="overview-title">What is being tested</h3>
+              <div class="exam-grid">
+                <div>
+                  <span class="pill">Paper 1</span>
+                  <h4>Writing</h4>
+                  <p>45 minutes. 140-150 words. Recent tasks: picture story in the past, formal letter with five required communication points.</p>
+                </div>
+                <div>
+                  <span class="pill">Paper 2</span>
+                  <h4>Reading</h4>
+                  <p>True/false with Spanish correction, then short-answer comprehension in Spanish.</p>
+                </div>
+                <div>
+                  <span class="pill">Closure</span>
+                  <h4>One-word cloze</h4>
+                  <p>10 blanks. Common targets: prepositions, tense choice, subjunctive triggers, pronouns, useful nouns/adjectives.</p>
+                </div>
+                <div>
+                  <span class="pill">Paper 3</span>
+                  <h4>Listening</h4>
+                  <p>Multiple choice plus short Spanish answers. Topics include technology, leisure, volunteering, work, education.</p>
+                </div>
+              </div>
+            </article>
+
+            <article class="panel">
+              <h3>High-value revision list</h3>
+              <ul class="check-list">
+                <li>Indefinido for completed past events; imperfecto for background, habits, descriptions, ongoing states.</li>
+                <li>Closure patterns: preocupado por, ayudar a, separar en, cada vez, al aire libre, de forma equilibrada.</li>
+                <li>Writing rubric rewards clear communication, varied verbs, connectors, prepositions, pronouns, time markers, and subordinate clauses.</li>
+                <li>Reading answers should be short, direct, and copied or paraphrased from the exact paragraph.</li>
+                <li>Formal letters need register: Estimado/a, me dirijo a usted, le propongo, atentamente.</li>
+              </ul>
+            </article>
+          </div>
+
+          <article class="panel">
+            <div class="section-heading">
+              <div>
+                <p class="eyebrow">Session recipe</p>
+                <h3>40-minute focused revision</h3>
+              </div>
+              <button class="soft-button" id="make-plan" type="button">Make plan</button>
+            </div>
+            <div class="plan-output" id="plan-output"></div>
+          </article>
+        </section>
+
+        <section class="tab-panel" id="cloze" aria-labelledby="cloze-title">
+          <article class="panel">
+            <div class="section-heading">
+              <div>
+                <p class="eyebrow">One word per blank</p>
+                <h3 id="cloze-title">Cloze generator</h3>
+              </div>
+              <div class="control-row">
+                <select id="cloze-topic" aria-label="Cloze topic">
+                  <option value="mixed">Mixed exam style</option>
+                  <option value="environment">Environment</option>
+                  <option value="leisure">Leisure and culture</option>
+                  <option value="travel">Travel</option>
+                </select>
+                <button class="dark-button" id="new-cloze" type="button">Generate</button>
+              </div>
+            </div>
+            <div id="cloze-practice" class="practice-area"></div>
+            <div class="action-row">
+              <button class="soft-button" id="check-cloze" type="button">Check answers</button>
+              <button class="ghost-button" id="show-cloze" type="button">Show answers</button>
+            </div>
+          </article>
+        </section>
+
+        <section class="tab-panel" id="tenses" aria-labelledby="tenses-title">
+          <div class="grid two">
+            <article class="panel">
+              <div class="section-heading">
+                <div>
+                  <p class="eyebrow">Core past contrast</p>
+                  <h3 id="tenses-title">Indefinido vs imperfecto</h3>
+                </div>
+                <button class="dark-button" id="new-tense" type="button">New set</button>
+              </div>
+              <div id="tense-practice" class="practice-area"></div>
+              <button class="soft-button" id="check-tense" type="button">Check set</button>
+            </article>
+
+            <article class="panel">
+              <h3>Decision rules</h3>
+              <div class="rule-stack">
+                <div>
+                  <span class="pill">Indefinido</span>
+                  <p>Completed event, sequence, sudden action, defined time: ayer, el primer dia, finalmente, una vez.</p>
+                </div>
+                <div>
+                  <span class="pill">Imperfecto</span>
+                  <p>Background, description, repeated habit, age/time/weather, ongoing emotion or state: antes, siempre, de pequeno, mientras.</p>
+                </div>
+                <div>
+                  <span class="pill">Both</span>
+                  <p>Imperfecto sets the scene; indefinido interrupts or advances the story.</p>
+                </div>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <section class="tab-panel" id="reading" aria-labelledby="reading-title">
+          <article class="panel">
+            <div class="section-heading">
+              <div>
+                <p class="eyebrow">Exam style</p>
+                <h3 id="reading-title">Reading practice</h3>
+              </div>
+              <div class="control-row">
+                <select id="reading-mode" aria-label="Reading mode">
+                  <option value="tf">True/false correction</option>
+                  <option value="short">Short answers</option>
+                </select>
+                <button class="dark-button" id="new-reading" type="button">Generate</button>
+              </div>
+            </div>
+            <div id="reading-practice" class="practice-area"></div>
+            <button class="soft-button" id="check-reading" type="button">Check reading</button>
+          </article>
+        </section>
+
+        <section class="tab-panel" id="writing" aria-labelledby="writing-title">
+          <div class="grid two">
+            <article class="panel">
+              <div class="section-heading">
+                <div>
+                  <p class="eyebrow">140-150 words</p>
+                  <h3 id="writing-title">Writing trainer</h3>
+                </div>
+                <button class="dark-button" id="new-writing" type="button">New prompt</button>
+              </div>
+              <div id="writing-prompt" class="prompt-box"></div>
+              <textarea id="writing-draft" rows="12" placeholder="Write your Spanish answer here..."></textarea>
+              <div class="writer-tools">
+                <span id="word-count">0 words</span>
+                <button class="soft-button" id="analyse-writing" type="button">Analyse draft</button>
+              </div>
+              <div id="writing-feedback" class="feedback"></div>
+            </article>
+
+            <article class="panel">
+              <h3>Writing score checklist</h3>
+              <ul class="check-list">
+                <li>Hit every content bullet clearly. Do not sacrifice communication for fancy grammar.</li>
+                <li>Use past tenses accurately: indefinido for events, imperfecto for background, pluscuamperfecto for the earlier past.</li>
+                <li>Add connectors: primero, luego, sin embargo, ademas, por eso, por ultimo.</li>
+                <li>Add one opinion and one reason: en mi opinion, creo que, ya que, porque.</li>
+                <li>Keep it under 150 words. Short correct sentences beat long broken ones.</li>
+              </ul>
+            </article>
+          </div>
+        </section>
+
+        <section class="tab-panel" id="grammar" aria-labelledby="grammar-title">
+          <div class="grid two">
+            <article class="panel">
+              <div class="section-heading">
+                <div>
+                  <p class="eyebrow">Notes-based</p>
+                  <h3 id="grammar-title">Grammar bank</h3>
+                </div>
+                <select id="grammar-filter" aria-label="Grammar topic">
+                  <option value="all">All topics</option>
+                  <option value="prepositions">Prepositions</option>
+                  <option value="serestar">Ser/estar</option>
+                  <option value="subjunctive">Subjunctive</option>
+                  <option value="pronouns">Pronouns</option>
+                </select>
+              </div>
+              <div id="grammar-bank" class="card-list"></div>
+            </article>
+
+            <article class="panel">
+              <div class="section-heading">
+                <div>
+                  <p class="eyebrow">Fast recall</p>
+                  <h3>Flashcards</h3>
+                </div>
+                <button class="dark-button" id="next-card" type="button">Next</button>
+              </div>
+              <div class="flashcard" id="flashcard" tabindex="0" role="button" aria-label="Flip flashcard">
+                <p class="eyebrow">Click to flip</p>
+                <strong id="card-front"></strong>
+                <span id="card-back"></span>
+              </div>
+            </article>
+          </div>
+        </section>
+
+        <section class="tab-panel" id="listening" aria-labelledby="listening-title">
+          <article class="panel">
+            <div class="section-heading">
+              <div>
+                <p class="eyebrow">Paper 3 simulator</p>
+                <h3 id="listening-title">Listening practice</h3>
+              </div>
+              <button class="dark-button" id="new-listening" type="button">New item</button>
+            </div>
+            <div id="listening-practice" class="practice-area"></div>
+            <div class="action-row">
+              <button class="soft-button" id="play-listening" type="button">Play Spanish audio</button>
+              <button class="soft-button" id="check-listening" type="button">Check answer</button>
+              <button class="ghost-button" id="show-transcript" type="button">Show transcript</button>
+            </div>
+          </article>
+        </section>
+      </main>
+    </div>
+
+    <script src="app.js"></script>
+  </body>
+</html>
