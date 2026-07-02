@@ -1,6 +1,17 @@
 const $ = (selector) => document.querySelector(selector);
 const $$ = (selector) => Array.from(document.querySelectorAll(selector));
 
+const supabaseConfig = window.SPANISH_SUPABASE_CONFIG || {};
+const hasSupabaseConfig =
+  supabaseConfig.url &&
+  supabaseConfig.anonKey &&
+  !supabaseConfig.url.includes("YOUR_PROJECT_ID") &&
+  !supabaseConfig.anonKey.includes("YOUR_SUPABASE_ANON_KEY");
+const supabaseClient =
+  hasSupabaseConfig && window.supabase
+    ? window.supabase.createClient(supabaseConfig.url, supabaseConfig.anonKey)
+    : null;
+
 const state = {
   checked: Number(localStorage.getItem("spanish.checked") || 0),
   correct: Number(localStorage.getItem("spanish.correct") || 0),
@@ -10,7 +21,9 @@ const state = {
   writingPrompt: null,
   listening: null,
   cardIndex: 0,
-  cardFlipped: false
+  cardFlipped: false,
+  authMode: "signup",
+  appReady: false
 };
 
 const clozeBank = [
@@ -263,6 +276,119 @@ const listeningBank = [
     answer: "arregla cables y luces"
   }
 ];
+
+function setAuthMessage(message, type = "") {
+  const messageNode = $("#auth-message");
+  if (!messageNode) return;
+  messageNode.textContent = message;
+  messageNode.className = `result-note ${type}`;
+}
+
+function updateAuthMode() {
+  const isSignup = state.authMode === "signup";
+  $("#auth-title").textContent = isSignup ? "Create your account" : "Sign in";
+  $("#auth-submit").textContent = isSignup ? "Create account" : "Sign in";
+  $("#auth-mode-toggle").textContent = isSignup ? "Already have an account? Sign in" : "Need an account? Create one";
+  $("#auth-password").autocomplete = isSignup ? "new-password" : "current-password";
+  setAuthMessage("");
+}
+
+function showAuthScreen() {
+  $("#auth-screen").classList.remove("hidden");
+  $("#app-shell").classList.add("hidden");
+}
+
+function showApp(user) {
+  $("#auth-screen").classList.add("hidden");
+  $("#app-shell").classList.remove("hidden");
+  $("#user-email").textContent = user?.email || "Signed in";
+  initApp();
+}
+
+async function handleAuthSubmit(event) {
+  event.preventDefault();
+  if (!supabaseClient) {
+    setAuthMessage("Supabase is not configured yet. Add your project URL and anon key in config.js.", "bad");
+    return;
+  }
+
+  const email = $("#auth-email").value.trim();
+  const password = $("#auth-password").value;
+  $("#auth-submit").disabled = true;
+  setAuthMessage(state.authMode === "signup" ? "Creating account..." : "Signing in...");
+
+  const authCall =
+    state.authMode === "signup"
+      ? supabaseClient.auth.signUp({ email, password })
+      : supabaseClient.auth.signInWithPassword({ email, password });
+  const { data, error } = await authCall;
+
+  $("#auth-submit").disabled = false;
+  if (error) {
+    setAuthMessage(error.message, "bad");
+    return;
+  }
+
+  if (data.session) {
+    showApp(data.session.user);
+    return;
+  }
+
+  setAuthMessage("Account created. Check your email to confirm it, then sign in.", "good");
+  state.authMode = "signin";
+  updateAuthMode();
+}
+
+function bindAuthEvents() {
+  $("#auth-form").addEventListener("submit", handleAuthSubmit);
+  $("#auth-mode-toggle").addEventListener("click", () => {
+    state.authMode = state.authMode === "signup" ? "signin" : "signup";
+    updateAuthMode();
+  });
+}
+
+async function bootAuth() {
+  bindAuthEvents();
+  updateAuthMode();
+
+  if (!hasSupabaseConfig) {
+    $("#supabase-config-warning").classList.remove("hidden");
+    $("#auth-submit").disabled = true;
+    showAuthScreen();
+    setAuthMessage("Add Supabase credentials first, then reload.");
+    return;
+  }
+
+  if (!window.supabase) {
+    $("#supabase-config-warning").classList.remove("hidden");
+    $("#supabase-config-warning").textContent = "Supabase could not load. Check the CDN script or network connection, then reload.";
+    $("#auth-submit").disabled = true;
+    showAuthScreen();
+    setAuthMessage("Supabase library failed to load.", "bad");
+    return;
+  }
+
+  supabaseClient.auth.onAuthStateChange((_event, session) => {
+    if (session?.user) {
+      showApp(session.user);
+    } else {
+      showAuthScreen();
+    }
+  });
+
+  const { data, error } = await supabaseClient.auth.getSession();
+  if (error) {
+    showAuthScreen();
+    setAuthMessage(error.message, "bad");
+    return;
+  }
+
+  if (data.session?.user) {
+    showApp(data.session.user);
+  } else {
+    showAuthScreen();
+  }
+}
 
 function sample(items, count) {
   const copy = [...items];
@@ -585,9 +711,15 @@ function bindEvents() {
   $("#play-listening").addEventListener("click", playListening);
   $("#check-listening").addEventListener("click", checkListening);
   $("#show-transcript").addEventListener("click", () => $("#listening-transcript").classList.toggle("hidden"));
+  $("#sign-out").addEventListener("click", async () => {
+    if (!supabaseClient) return;
+    await supabaseClient.auth.signOut();
+  });
 }
 
-function init() {
+function initApp() {
+  if (state.appReady) return;
+  state.appReady = true;
   bindEvents();
   updateProgress();
   renderCloze();
@@ -600,4 +732,4 @@ function init() {
   makePlan();
 }
 
-init();
+bootAuth();

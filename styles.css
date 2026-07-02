@@ -38,6 +38,66 @@ button {
   cursor: pointer;
 }
 
+.auth-screen {
+  min-height: 100vh;
+  display: grid;
+  place-items: center;
+  padding: 24px;
+}
+
+.auth-card {
+  width: min(100%, 440px);
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  padding: 24px;
+  background: rgba(255, 255, 255, 0.92);
+  box-shadow: var(--shadow);
+}
+
+.auth-copy h2 {
+  margin: 0;
+  color: var(--ink);
+  font-size: clamp(2rem, 8vw, 3rem);
+  line-height: 1;
+}
+
+.auth-form {
+  display: grid;
+  gap: 14px;
+  margin-top: 18px;
+}
+
+.auth-form label {
+  display: grid;
+  gap: 6px;
+  color: var(--brown);
+  font-weight: 850;
+}
+
+.auth-form input {
+  min-height: 44px;
+  padding: 9px 12px;
+}
+
+.auth-form .dark-button,
+.auth-card .ghost-button {
+  width: 100%;
+}
+
+.auth-card .ghost-button {
+  margin-top: 10px;
+}
+
+.setup-warning {
+  margin-top: 14px;
+  border: 1px solid #f3c35d;
+  border-radius: 8px;
+  padding: 12px;
+  background: #fff8e5;
+  color: #6b4b00;
+  line-height: 1.45;
+}
+
 .app-shell {
   display: grid;
   grid-template-columns: 280px minmax(0, 1fr);
@@ -158,6 +218,26 @@ button {
   border: 1px solid var(--line);
   border-radius: 8px;
   background: white;
+}
+
+.account-box {
+  margin-top: 26px;
+  padding: 16px;
+  border: 1px solid var(--line);
+  border-radius: 8px;
+  background: white;
+}
+
+.account-box strong {
+  display: block;
+  overflow-wrap: anywhere;
+  color: var(--ink);
+  font-size: 0.92rem;
+}
+
+.account-box .ghost-button {
+  width: 100%;
+  margin-top: 12px;
 }
 
 .progress-row {
@@ -284,7 +364,9 @@ li {
 
 select,
 textarea,
-input[type="text"] {
+input[type="text"],
+input[type="email"],
+input[type="password"] {
   border: 1px solid var(--line);
   border-radius: 8px;
   background: white;

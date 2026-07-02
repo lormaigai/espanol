@@ -7,7 +7,44 @@
     <link rel="stylesheet" href="styles.css">
   </head>
   <body>
-    <div class="app-shell">
+    <section class="auth-screen" id="auth-screen" aria-label="Account required">
+      <div class="auth-card">
+        <div class="brand">
+          <div class="brand-mark">S4</div>
+          <div>
+            <p class="eyebrow">GCE O Level Spanish</p>
+            <h1>Revision Desk</h1>
+          </div>
+        </div>
+
+        <div class="auth-copy">
+          <p class="eyebrow">Account required</p>
+          <h2 id="auth-title">Create your account</h2>
+          <p>Use your email to save access through Supabase Auth before entering the revision app.</p>
+        </div>
+
+        <div class="setup-warning hidden" id="supabase-config-warning">
+          Supabase is not configured yet. Set your project URL and anon key in <strong>config.js</strong>.
+        </div>
+
+        <form class="auth-form" id="auth-form">
+          <label>
+            Email
+            <input id="auth-email" type="email" autocomplete="email" placeholder="you@example.com" required>
+          </label>
+          <label>
+            Password
+            <input id="auth-password" type="password" autocomplete="new-password" minlength="6" placeholder="At least 6 characters" required>
+          </label>
+          <button class="dark-button" id="auth-submit" type="submit">Create account</button>
+        </form>
+
+        <button class="ghost-button" id="auth-mode-toggle" type="button">Already have an account? Sign in</button>
+        <p class="result-note" id="auth-message" role="status"></p>
+      </div>
+    </section>
+
+    <div class="app-shell hidden" id="app-shell">
       <aside class="sidebar" aria-label="Revision sections">
         <div class="brand">
           <div class="brand-mark">S4</div>
@@ -26,6 +63,12 @@
           <button class="tab-button" data-tab="grammar">Grammar Bank</button>
           <button class="tab-button" data-tab="listening">Listening</button>
         </nav>
+
+        <div class="account-box">
+          <p class="eyebrow">Account</p>
+          <strong id="user-email"></strong>
+          <button class="ghost-button" id="sign-out" type="button">Sign out</button>
+        </div>
 
         <div class="progress-box">
           <p class="eyebrow">Today</p>
@@ -272,6 +315,8 @@
       </main>
     </div>
 
+    <script src="https://cdn.jsdelivr.net/npm/@supabase/supabase-js@2"></script>
+    <script src="config.js"></script>
     <script src="app.js"></script>
   </body>
 </html>
